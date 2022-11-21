@@ -5,8 +5,8 @@ import carla
 import csv
 from math import *
 
-WAYPOINTS = [] # x decrease, y increase (steer<0 y變大)
-target = 0 # index of waypoint
+WAYPOINTS = []
+target = 0 # index of next waypoint
 stage = 1
 
 def load_waypoints(path):
@@ -29,11 +29,7 @@ def step(my_car):
     
     if(target == 25):
         stage = 4
-
-    ## TODO
-    ## Apply control to the car. See the API here.
-    ## https://carla.readthedocs.io/en/latest/python_api/#carla.VehicleControl
-    
+        
     control = my_car.get_control()
     if(stage == 4):
         control.throttle = 0.0
@@ -44,10 +40,10 @@ def step(my_car):
         
         dx = WAYPOINTS[target][0] - loc[0]
         dy = WAYPOINTS[target][1] - loc[1]
-        tan1 = dy/dx # 應該前進的方向
-        tan2 = tan(car_orientation/180 * pi) # 車的方向
+        tan1 = dy/dx # direction should go
+        tan2 = tan(car_orientation/180 * pi) # current direction
         diff = (tan1-tan2)/(1+tan1*tan2) # tan(a-b)
-        print("%f %f %f" %(tan1, tan2, diff))
+        
         if(abs(diff) <= 0.2):
             control.steer = 0
         elif(abs(diff) <= 0.4):
@@ -66,11 +62,6 @@ def step(my_car):
             control.steer = 0.35
         else:
             control.steer = 0.4
-
-
         if(diff > 0):
             control.steer *= -1
-
-
-    print("steer: %f" %(control.steer))
     my_car.apply_control(control)
