@@ -5,9 +5,6 @@ import carla
 events = None
 
 def step(my_car):
-    ## TODO
-    ## Apply control to the car. See the API here.
-    ## https://carla.readthedocs.io/en/latest/python_api/#carla.VehicleControl
     control = my_car.get_control()
     vel = my_car.get_velocity().length() # m/s
     d = on_sensor_data(events, my_car)
@@ -15,7 +12,6 @@ def step(my_car):
         control.throttle = 0.0
         control.brake = 1/(20-vel*3.6)
         my_car.apply_control(control)
-       # print("stop here ")
         return
     ttc = 100
     if(vel > 0):
@@ -41,13 +37,8 @@ def on_sensor_data(event, my_car):
     vehicle_tag = int(CityObjectLabel.Vehicles) # coach car
     vehicle_points = filter(lambda det: det.object_tag == vehicle_tag, event) # get the lidar on the coach car
     
-    ## TODO
-    ## Find the distance to the coach car using LiDAR points. You may check this.
-    ## https://carla.readthedocs.io/en/latest/python_api/#carla.SemanticLidarDetection
     global events
     events = event
-
-
     coach = 0.0
     for data in vehicle_points:
         d =  data.point.distance(carla.Location(0, 0, 0))
