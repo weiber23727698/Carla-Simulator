@@ -15,3 +15,4 @@ There will be a coach car preceding our car and all we have to do is to follow i
 demo: https://youtu.be/udK508Nedh0
 ## Waypoints tracking
 There will be 25 waypoints set in the map. We have to follow these points to go through a curve without collision.
+demo: https://youtu.be/PjX3MEytops
